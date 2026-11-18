@@ -2,7 +2,7 @@
 
 ## 作業說明
 
-本次作業分為ADM以及DPCM兩個部分，關於實驗要使用的輸入圖以在wiki下載的彩色原圖並以`ChangeToGray.py`處理成灰階圖片，
+本次作業分為ADM以及DPCM兩個部分，彩色原圖以先用`ChangeToGray.py`處理成灰階圖片，
 以便後續實驗使用。若要重現實驗，可以分別在`ADM.py`,`DPCM.py`兩個檔案的開始找到設定的區塊，只要修改名字及參數並執行，輸出圖片會存在data資料夾中
 
 - lena原圖
@@ -12,6 +12,37 @@
 - lena灰階圖
 
     ![](data/lena_gray.png)
+
+## 重現實驗
+
+### 1. 環境建置
+
+
+```bash
+python -m venv venv
+
+# Linux / macOS
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+### 依序執行（請在專案根目錄執行）
+
+```bash
+python src/ChangeToGray.py   # 彩色轉灰階，產生 data/lena_gray.png
+python src/ADM.py            # Part A：ADM 四組參數
+python src/DPCM.py           # Part B：DPCM 四組量化器
+```
+
+### 5. 修改參數
+
+- ADM：修改 `src/ADM.py` 開頭的 `config`（Δ[0]、Δmin）
+- DPCM：修改 `src/DPCM.py` 開頭的 `quantizer`（`bits`、`number_of_level`、`bound`、`level`）
+
+修改 DPCM 量化器時，`number_of_level` 須等於 `2 ** bits`，`bound` 長度為 `number_of_level − 1`，`level` 長度為 `number_of_level`，否則 CR 的計算會不正確。
 
 ## ADM壓縮
 
