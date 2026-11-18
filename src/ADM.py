@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os
+import time
+import Tool
 
 root = os.path.join(os.path.dirname(os.path.dirname(__file__)))
 data = os.path.join(root, "data/")
@@ -93,7 +95,31 @@ if __name__ == "__main__":
     if gray is None:
         raise FileNotFoundError("something wrong")
     for name, cfg in config.items():
+
+        t_encode = 0.0
+        t_decode = 0.0
+
+        for i in range(5):
+            t0 = time.perf_counter()
+            fp, bits = adm_encode(gray, cfg["delta_0"], cfg["delta_min"])
+            t_encode += time.perf_counter() - t0
+
+            t0 = time.perf_counter()
+            return_img = adm_decode(fp, bits, cfg["delta_0"], cfg["delta_min"])
+            t_decode += time.perf_counter() - t0
+
         fp, bits = adm_encode(gray, cfg["delta_0"], cfg["delta_min"])
         return_img = adm_decode(fp, bits, cfg["delta_0"], cfg["delta_min"])
+
         out_path = os.path.join(data, f"lena_adm_{name}.png")
         cv2.imwrite(out_path, return_img)
+
+        m = Tool.mse(gray, return_img)
+        p = Tool.psnr(m)
+        c = Tool.cr(gray.shape[0], gray.shape[1], 1, 16)
+        t_encode /= 5.0
+        t_decode /= 5.0
+
+        print(
+            f"name:{name}, mse:{m:.2f}, psnr:{p:.2f}, cr:{c:.2f}, t_encode:{t_encode:.2f}. t_decode:{t_decode:.2f}, shape:{gray.shape}"
+        )
