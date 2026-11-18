@@ -14,6 +14,7 @@
     ![](data/lena_gray.png)
 
 ## 重現實驗
+GitHub 連結:[hw3](https://github.com/peter95514/information_theory_hw3)
 
 ### 1. 環境建置
 
