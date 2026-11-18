@@ -121,5 +121,5 @@ if __name__ == "__main__":
         t_decode /= 5.0
 
         print(
-            f"name:{name}, mse:{m:.2f}, psnr:{p:.2f}, cr:{c:.2f}, t_encode:{t_encode:.2f}. t_decode:{t_decode:.2f}, shape:{gray.shape}"
+            f"name:{name}, mse:{m:.2f}, psnr:{p:.2f}, cr:{c:.2f}, t_encode:{t_encode:.4f}. t_decode:{t_decode:.4f}, shape:{gray.shape}"
         )
